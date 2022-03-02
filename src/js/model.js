@@ -51,7 +51,7 @@ export const loadSearchResults = async function (query) {
   state.search.page = 1;
   try {
     state.search.query = query;
-    const data = await AJAX(`${API_URL}?search=${query}&key=${KEY}`);
+    const data = await AJAX(`${API_URL}?search=${query}`);
     console.log(data);
     state.search.results = data.data.recipes.map(rec => {
       return {
@@ -106,7 +106,12 @@ init();
 const clearBookmarks = function () {
   localStorage.clear('bookmarks');
 };
-clearBookmarks();
+
+
+// clearBookmarks();
+
+
+
 export const uploadRecipe = async function (newRecipe) {
   try {
     console.log(newRecipe);
@@ -135,4 +140,19 @@ export const uploadRecipe = async function (newRecipe) {
   } catch (err) {
     throw err;
   }
+};
+
+export const changeIngredientQuantity = function (data) {
+
+  const newData = data.ingredients.map(obj => obj.quantity);
+  const newArr = newData.map(quantity => {
+    if (quantity === .13) quantity = .125;
+    if (quantity === .67) quantity = .666;
+    if (quantity === .33) quantity = .333;
+
+    return quantity;
+  });
+
+  data.ingredients.forEach((obj, i) => obj.quantity = newArr[i]);
+
 };

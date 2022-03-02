@@ -29,6 +29,8 @@ const controlRecipes = async function () {
 
     // 3 Loading Recipe
     await model.loadRecipe(id);
+    // Changing unfamiliar recipe fractions
+    model.changeIngredientQuantity(model.state.recipe);
     // 4 Rendering Recipe
     console.log(model.state.recipe);
     recipeView.render(model.state.recipe);
@@ -120,6 +122,13 @@ const controlAddRecipe = async function (newRecipe) {
   }
 };
 
+// Load recipe directions in a new tab
+const loadDirections = function () {
+  const href = model.state.recipe.sourceUrl;
+  window.open(href, '_blank');
+};
+
+
 const init = function () {
   bookmarksView.addHandlerRender(controlBookmarks);
   recipeView.addHandlerRender(controlRecipes);
@@ -128,7 +137,7 @@ const init = function () {
   searchView.addHandlerSearch(controlSearchResults);
   paginationView.addHandlerClick(controlPagination);
   addRecipeView.addHandlerUpload(controlAddRecipe);
-  console.log('Added this awesome new feature');
+  recipeView.addHandlerOpenDirections(loadDirections);
 };
 init();
 
